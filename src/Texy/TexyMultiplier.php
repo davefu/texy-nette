@@ -16,14 +16,14 @@ class TexyMultiplier
     use Nette\SmartObject;
 
     /**
-     * @var TexyFactory[]
+     * @var array<string, TexyFactory>
      */
     private array $factories = [];
 
     /**
-     * @var Texy\Texy[]
+     * @var array<string, Texy\Texy>
      */
-    private array $texy = [];
+    private array $instances = [];
 
     private string $mode;
 
@@ -63,14 +63,14 @@ class TexyMultiplier
     {
         $mode ??= $this->mode;
 
-        if (! isset($this->texy[$mode])) {
+        if (! isset($this->instances[$mode])) {
             if (! isset($this->factories[$mode])) {
                 throw new \InvalidArgumentException("Missing Texy! factory for mode '{$mode}'.");
             }
-            $this->texy[$mode] = $this->factories[$mode]->create();
+            $this->instances[$mode] = $this->factories[$mode]->create();
         }
 
-        return $this->texy[$mode];
+        return $this->instances[$mode];
     }
 
     /**
